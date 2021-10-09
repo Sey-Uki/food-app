@@ -1,7 +1,6 @@
 import './App.css';
 import { Cards } from './components/Card/Card';
 
-
 function App() {
   return (
     <div className="App">

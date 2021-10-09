@@ -1,23 +1,17 @@
 import "antd/dist/antd.css";
 import { Card } from "antd";
 import { DeleteFilled , HeartFilled } from "@ant-design/icons";
-import { useEffect, useState } from "react";
 import "./Card.css";
 import { Spin } from 'antd';
+import { useSelector } from "react-redux";
 
 const { Meta } = Card;
 
 export const Cards = () => {
-  const [foodArr, setFoodArr] = useState([]);
 
-  useEffect(() => {
-    fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood")
-      .then(async (res) => {
-        const json = await res.json();
-        setFoodArr(json.meals);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  const foodArr = useSelector((state) => {
+    return state.food
+  });
 
   if (foodArr.length === 0)
     return <Spin tip="Loading..." />
