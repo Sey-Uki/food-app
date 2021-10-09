@@ -3,16 +3,15 @@ const initial = {
 };
 
 export const reducer = (state = initial, action) => {
-    switch (action.type){
-      case 'SET_FOOD': {
-        return {
-          ...state,
-          food: [
-            ...state.food,
-            ...action.payload
-          ]
-        }
+  switch (action.type) {
+    case 'SET_FOOD': {
+      return {
+        ...state,
+        food: [
+          ...action.payload
+        ]
       }
-      default: {return state;}
     }
+    default: {return state;}
+  }
 }

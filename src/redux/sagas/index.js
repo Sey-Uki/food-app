@@ -1,20 +1,49 @@
-import {put} from 'redux-saga/effects';
+import axios from "axios";
+import { put, call, takeEvery, all, takeLeading } from "redux-saga/effects";
 
-async function getFood() {
-  const request = await fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood");
-  const data = await request.json();
-  return data.meals;
+// Editing data
+function* workerPutFoodSaga({ updatedMeal }) {
+  try {
+    yield call(
+      axios.put,
+      `https://616205fa374925001763153b.mockapi.io/api/seafood/${updatedMeal.id}`,
+      updatedMeal
+    );
+    yield put({
+      type: "PUT_DATA",
+      updatedMeal,
+    });
+    yield put({type: 'FETCH_DATA'})
+    console.log("Success edit =>", updatedMeal);
+  } catch (e) {
+    console.log(`Put request failed: ${e}`);
+  }
 }
 
-export function* workerFoodSaga() {
-  const data = yield getFood();
-  yield put({type: 'SET_FOOD', payload: data});
+export function* watchPutFoodSaga() {
+  yield takeLeading("PUT_DATA", workerPutFoodSaga);
 }
 
-export function* watchFoodSaga() {
-  yield workerFoodSaga();
+// Fetching data
+export function* workerGetFoodSaga() {
+  try {
+    const response = yield call(
+      axios.get,
+      "https://616205fa374925001763153b.mockapi.io/api/seafood"
+    );
+    yield put({ type: "SET_FOOD", payload: response.data });
+  } catch (e) {
+    console.log(`Get request failed: ${e}`);
+  }
+}
+
+export function* watchGetFoodSaga() {
+  yield takeEvery("FETCH_DATA", workerGetFoodSaga);
 }
 
 export function* rootSaga() {
-  yield watchFoodSaga();
+  yield all([
+    watchGetFoodSaga(),
+    watchPutFoodSaga()
+  ])
 }
