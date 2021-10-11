@@ -13,7 +13,7 @@ function* workerPutFoodSaga({ updatedMeal }) {
       type: "PUT_DATA",
       updatedMeal,
     });
-    yield put({type: 'FETCH_DATA'})
+    yield put({ type: "FETCH_DATA" });
     console.log("Success edit =>", updatedMeal);
   } catch (e) {
     console.log(`Put request failed: ${e}`);
@@ -42,8 +42,5 @@ export function* watchGetFoodSaga() {
 }
 
 export function* rootSaga() {
-  yield all([
-    watchGetFoodSaga(),
-    watchPutFoodSaga()
-  ])
+  yield all([watchGetFoodSaga(), watchPutFoodSaga()]);
 }

@@ -10,11 +10,6 @@
   max-width: 1000px;
   margin: 15px auto;
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
-
-.card {
-  margin: 15px 0;
-}
-

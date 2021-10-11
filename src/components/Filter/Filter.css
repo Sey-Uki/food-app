@@ -1,0 +1,12 @@
+.filter {
+  margin-top: 15px;
+}
+
+.filterText {
+  vertical-align: middle;
+  padding-left: 10px;
+}
+
+.ant-switch-checked {
+  background-color: crimson;
+}
