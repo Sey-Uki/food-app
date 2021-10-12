@@ -1,5 +1,6 @@
 import axios from "axios";
 import { put, call, takeEvery, all, takeLeading } from "redux-saga/effects";
+import { message } from "antd";
 
 // Editing data
 function* workerPutFoodSaga({ updatedMeal }) {
@@ -24,6 +25,30 @@ export function* watchPutFoodSaga() {
   yield takeLeading("PUT_DATA", workerPutFoodSaga);
 }
 
+// Delete data
+function* workerDeleteFoodSaga({ updatedMeal }) {
+  try {
+    yield call(
+      axios.delete,
+      `https://616205fa374925001763153b.mockapi.io/api/seafood/${updatedMeal.id}`,
+      updatedMeal
+    );
+    yield put({
+      type: "DELETE_DATA",
+      updatedMeal,
+    });
+    yield put({ type: "FETCH_DATA" });
+    console.log("Success edit =>", updatedMeal);
+    message.success("Successful deletion");
+  } catch (e) {
+    console.log(`Put request failed: ${e}`);
+  }
+}
+
+export function* watchDeleteFoodSaga() {
+  yield takeLeading("DELETE_DATA", workerDeleteFoodSaga);
+}
+
 // Fetching data
 export function* workerGetFoodSaga() {
   try {
@@ -41,6 +66,7 @@ export function* watchGetFoodSaga() {
   yield takeEvery("FETCH_DATA", workerGetFoodSaga);
 }
 
+// Root Saga
 export function* rootSaga() {
-  yield all([watchGetFoodSaga(), watchPutFoodSaga()]);
+  yield all([watchGetFoodSaga(), watchPutFoodSaga(), watchDeleteFoodSaga()]);
 }

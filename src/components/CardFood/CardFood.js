@@ -1,10 +1,13 @@
 import "antd/dist/antd.css";
-import { Card } from "antd";
+import "./CardFood.css";
+import { Card, Modal } from "antd";
 import { DeleteFilled, HeartFilled } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 const { Meta } = Card;
+const { confirm } = Modal;
 
 export const CardFood = ({ foodArr, checked }) => {
   const dispatch = useDispatch();
@@ -13,6 +16,25 @@ export const CardFood = ({ foodArr, checked }) => {
     const temp = [...foodArr];
     temp[pos].liked = !temp[pos].liked;
     dispatch({ type: "PUT_DATA", updatedMeal: temp[pos] });
+  };
+
+  const deleteFood = (pos) => {
+    const temp = [...foodArr];
+    confirm({
+      title: "Do you want to delete this post?",
+      icon: <ExclamationCircleOutlined />,
+      content: "It is irreversible",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        console.log("OK");
+        dispatch({ type: "DELETE_DATA", updatedMeal: temp[pos] });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
 
   const [filterData, setFilterData] = useState([]);
@@ -38,7 +60,7 @@ export const CardFood = ({ foodArr, checked }) => {
               style={{ width: 300 }}
               cover={<img alt="example" src={item.strMealThumb} />}
               actions={[
-                <DeleteFilled key="delete" />,
+                <DeleteFilled key="delete" onClick={() => deleteFood(pos)} />,
                 <HeartFilled
                   key="heart"
                   onClick={() => likeFood(pos)}
