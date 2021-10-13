@@ -1,0 +1,1 @@
+export const API_URL = 'https://616205fa374925001763153b.mockapi.io/api/seafood/'

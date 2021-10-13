@@ -1,3 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+}
+
 .App {
   text-align: center;
+}
+
+.ant-switch-checked {
+  background-color: crimson !important;
 }

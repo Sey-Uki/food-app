@@ -1,5 +1,4 @@
-import "antd/dist/antd.css";
-import "./CardFood.css";
+import styles from './CardFood.module.css';
 import { Card, Modal } from "antd";
 import { DeleteFilled, HeartFilled } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
@@ -12,10 +11,13 @@ const { confirm } = Modal;
 export const CardFood = ({ foodArr, checked }) => {
   const dispatch = useDispatch();
 
+  const [filterData, setFilterData] = useState([]);
+
   const likeFood = (pos) => {
     const temp = [...foodArr];
-    temp[pos].liked = !temp[pos].liked;
-    dispatch({ type: "PUT_DATA", updatedMeal: temp[pos] });
+    const tempFood = filterData.length > 0 ? filterData : temp;
+    tempFood[pos].liked = !tempFood[pos].liked;
+    dispatch({ type: "PUT_DATA", updatedMeal: tempFood[pos] });
   };
 
   const deleteFood = (pos) => {
@@ -37,8 +39,6 @@ export const CardFood = ({ foodArr, checked }) => {
     });
   };
 
-  const [filterData, setFilterData] = useState([]);
-
   useEffect(() => {
     const temp = [...foodArr];
     if (checked) {
@@ -56,6 +56,7 @@ export const CardFood = ({ foodArr, checked }) => {
       {(filterData.length >= 0 && checked ? filterData : foodArr).map(
         (item, pos) => {
           return (
+            <div className={styles.card}>
             <Card
               style={{ width: 300 }}
               cover={<img alt="example" src={item.strMealThumb} />}
@@ -67,11 +68,11 @@ export const CardFood = ({ foodArr, checked }) => {
                   style={{ color: item.liked && "crimson" }}
                 />,
               ]}
-              className="card"
               key={item.id}
             >
               <Meta title={item.strMeal} description={item.strMeal} />
             </Card>
+            </div>
           );
         }
       )}

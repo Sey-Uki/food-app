@@ -9,9 +9,9 @@ export const reducer = (state = initial, action) => {
         ...state,
         food: [
           ...action.payload
-        ]
+        ],
       }
     }
-    default: {return state;}
+    default: { return state }
   }
 }
